@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glossario de IA - TechAI_Lab</title>
+  <meta
+    name="description"
+    content="Glossario com conceitos essenciais de inteligencia artificial para consulta rapida."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #0f0f1a;
+      --bg3: #13131f;
+      --blue: #4f8ef7;
+      --purple: #8b5cf6;
+      --cyan: #06b6d4;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --border: #1e2a3a;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+    .gradient-text {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 45%, var(--cyan) 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 15, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      height: 70px;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--blue);
+    }
+
+    .hero {
+      padding: 7rem 0 3rem;
+    }
+
+    .section-tag {
+      display: inline-block;
+      margin-bottom: 1rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(139, 92, 246, 0.12);
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin-bottom: 1rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 1.08;
+    }
+
+    .hero-sub {
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .search-panel {
+      margin: 2.5rem 0 3rem;
+      padding: 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(79, 142, 247, 0.08), rgba(139, 92, 246, 0.04)), var(--bg2);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    .search-label {
+      display: block;
+      margin-bottom: 0.7rem;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.95rem 1rem;
+      border: 1px solid rgba(79, 142, 247, 0.18);
+      border-radius: 14px;
+      background: var(--bg3);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
+    }
+
+    .search-input::placeholder {
+      color: #7c8ba1;
+    }
+
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.3rem;
+      padding-bottom: 5rem;
+    }
+
+    .term-card {
+      position: relative;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg2);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .term-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at top right, rgba(79, 142, 247, 0.12), transparent 42%);
+      pointer-events: none;
+    }
+
+    .term-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(139, 92, 246, 0.45);
+      box-shadow: 0 18px 40px -24px rgba(79, 142, 247, 0.45);
+    }
+
+    .term-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-bottom: 0.9rem;
+      color: var(--blue);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .term-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      box-shadow: 0 0 14px rgba(79, 142, 247, 0.45);
+    }
+
+    .term-card h2 {
+      margin-bottom: 0.85rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      line-height: 1.2;
+    }
+
+    .term-card p {
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .empty-state {
+      display: none;
+      padding: 1.2rem 1.4rem;
+      border: 1px dashed rgba(139, 92, 246, 0.35);
+      border-radius: 18px;
+      color: var(--muted);
+      background: rgba(139, 92, 246, 0.06);
+    }
+
+    footer {
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 720px) {
+      .container { padding: 0 1.25rem; }
+      .nav-inner { height: auto; padding: 1rem 1.25rem; flex-direction: column; align-items: flex-start; }
+      .hero { padding-top: 5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="index.html">
+        <div class="logo-icon">T</div>
+        <span class="gradient-text">TechAI_Lab</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="index.html">Inicio</a>
+        <a href="index.html#artigos">Artigos</a>
+        <a href="glossario.html" class="active">Glossario</a>
+        <a href="#">Sobre</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="section-tag">Base Conceitual</div>
+      <h1>Glossario essencial para navegar pela <span class="gradient-text">inteligencia artificial</span></h1>
+      <p class="hero-sub">
+        Consulte conceitos fundamentais usados em modelos modernos, pipelines de dados e sistemas inteligentes. A busca abaixo filtra os termos em tempo real.
+      </p>
+
+      <div class="search-panel">
+        <label class="search-label" for="searchInput">Buscar termo</label>
+        <input
+          id="searchInput"
+          class="search-input"
+          type="text"
+          placeholder="Ex: LLM, RAG, inferencia, embeddings..."
+        />
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="emptyState" class="empty-state">Nenhum termo encontrado para essa busca.</div>
+
+    <section id="glossaryGrid" class="glossary-grid">
+      <article class="term-card" data-term="llm large language model modelo de linguagem">
+        <div class="term-meta"><span class="term-dot"></span>Fundamento</div>
+        <h2>LLM</h2>
+        <p>Large Language Models sao modelos treinados em grandes volumes de texto para compreender contexto, gerar linguagem natural e resolver tarefas baseadas em padroes estatisticos.</p>
+      </article>
+
+      <article class="term-card" data-term="neural weights pesos neurais">
+        <div class="term-meta"><span class="term-dot"></span>Arquitetura</div>
+        <h2>Neural Weights</h2>
+        <p>Pesos neurais sao parametros numericos ajustados durante o treinamento. Eles definem quanta influencia cada conexao exerce sobre a saida de uma rede neural.</p>
+      </article>
+
+      <article class="term-card" data-term="backpropagation retropropagacao treinamento">
+        <div class="term-meta"><span class="term-dot"></span>Treinamento</div>
+        <h2>Backpropagation</h2>
+        <p>E o algoritmo que propaga o erro da saida para as camadas anteriores, permitindo atualizar os pesos e reduzir gradualmente a diferenca entre previsao e resultado esperado.</p>
+      </article>
+
+      <article class="term-card" data-term="rag retrieval augmented generation geracao aumentada">
+        <div class="term-meta"><span class="term-dot"></span>Pipeline</div>
+        <h2>RAG</h2>
+        <p>Retrieval-Augmented Generation combina busca em bases externas com geracao por LLM, trazendo contexto atualizado antes da resposta ser produzida.</p>
+      </article>
+
+      <article class="term-card" data-term="inference inferencia execucao modelo">
+        <div class="term-meta"><span class="term-dot"></span>Operacao</div>
+        <h2>Inference</h2>
+        <p>Inferencia e o momento em que um modelo ja treinado recebe uma entrada e produz uma saida, como classificar dados, prever valores ou gerar texto.</p>
+      </article>
+
+      <article class="term-card" data-term="embedding embeddings representacao vetorial">
+        <div class="term-meta"><span class="term-dot"></span>Representacao</div>
+        <h2>Embeddings</h2>
+        <p>Sao vetores numericos que transformam palavras, frases, imagens ou documentos em representacoes matematicas comparaveis por similaridade semantica.</p>
+      </article>
+
+      <article class="term-card" data-term="fine-tuning ajuste fino fine tuning">
+        <div class="term-meta"><span class="term-dot"></span>Adaptacao</div>
+        <h2>Fine-tuning</h2>
+        <p>Processo de ajustar um modelo pre-treinado com dados mais especificos para melhorar desempenho em um dominio, tarefa ou estilo de resposta.</p>
+      </article>
+
+      <article class="term-card" data-term="transformer atencao attention">
+        <div class="term-meta"><span class="term-dot"></span>Modelo</div>
+        <h2>Transformer</h2>
+        <p>Arquitetura baseada em mecanismos de atencao que revolucionou NLP e hoje sustenta grande parte dos modelos generativos multimodais.</p>
+      </article>
+
+      <article class="term-card" data-term="token tokenizacao contexto">
+        <div class="term-meta"><span class="term-dot"></span>Entrada</div>
+        <h2>Token</h2>
+        <p>Token e a unidade basica processada pelo modelo. Pode representar parte de uma palavra, uma palavra inteira ou simbolos, dependendo do tokenizador utilizado.</p>
+      </article>
+
+      <article class="term-card" data-term="hallucination alucinacao erro factual">
+        <div class="term-meta"><span class="term-dot"></span>Risco</div>
+        <h2>Hallucination</h2>
+        <p>Ocorre quando um modelo gera uma resposta plausivel na forma, mas incorreta nos fatos, muitas vezes por falta de contexto confiavel ou limites de verificacao.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 TechAI_Lab. Conceitos essenciais para acompanhar a evolucao da IA.</p>
+  </footer>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const cards = Array.from(document.querySelectorAll('.term-card'));
+    const emptyState = document.getElementById('emptyState');
+
+    function filterTerms() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const content = card.dataset.term + ' ' + card.innerText.toLowerCase();
+        const matches = content.includes(query);
+        card.style.display = matches ? '' : 'none';
+        if (matches) visibleCount += 1;
+      });
+
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', filterTerms);
+  </script>
+</body>
+</html>
