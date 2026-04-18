@@ -3,58 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TechAI_Lab — O Futuro da Inteligência Artificial, hoje</title>
-  <meta name="description" content="Explore ferramentas, artigos e análises sobre o universo da IA. Conteúdo técnico e acessível para devs, pesquisadores e entusiastas." />
+  <title>TechAI_Lab — O Futuro da Inteligência Artificial</title>
+  <meta name="description" content="Explore ferramentas, artigos e análises sobre o universo da IA." />
+  
+  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style  
-    :root {
-      --blue: #4f8ef7;
-      --purple: #8b5cf6;
-      --bg: #050508;
-      --bg2: #0f0f1a;
-      --border: #1e2a3a;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-    }
 
-    .articles-section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
+  <style>
+    /* ===== VARIÁVEIS & RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     
-    .articles-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 25px;
-      margin-top: 40px;
-    }
-
-    .article-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-      transition: all 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .article-card:hover {
-      border-color: var(--purple);
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.2);
-    }>
-    /* ===== RESET & VARIÁVEIS ===== */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
     :root {
       --bg:      #0a0a0f;
       --bg2:     #0f0f1a;
       --bg3:     #13131f;
-      --bg4:     #1a1a2e;
       --blue:    #4f8ef7;
       --purple:  #8b5cf6;
       --cyan:    #06b6d4;
@@ -62,851 +26,142 @@
       --muted:   #64748b;
       --border:  #1e2a3a;
     }
+
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--text);
       font-family: 'Inter', sans-serif;
-      font-size: 15px;
       line-height: 1.6;
+      overflow-x: hidden;
     }
-    a { text-decoration: none; color: inherit; }
 
-    /* ===== NAVBAR ===== */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(10, 10, 15, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
-    }
-    .nav-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 60px;
-    }
-    .logo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 20px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .logo-icon {
-      width: 28px;
-      height: 28px;
-      background: linear-gradient(135deg, var(--blue), var(--purple));
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-    }
-    .logo-text {
-      background: linear-gradient(135deg, var(--blue), var(--purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      align-items: center;
-    }
-    .nav-links a {
-      font-size: 14px;
-      color: var(--muted);
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); }
-    .nav-cta {
-      background: linear-gradient(135deg, var(--blue), var(--purple));
-      color: #fff;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: opacity 0.2s;
-    }
-    .nav-cta:hover { opacity: 0.85; }
-
-    /* ===== SEÇÕES GENÉRICAS ===== */
-    section { padding: 5rem 2rem; }
-    .container { max-width: 1100px; margin: 0 auto; }
-    .section-tag {
-      display: inline-block;
-      background: rgba(139, 92, 246, 0.12);
-      border: 1px solid rgba(139, 92, 246, 0.25);
-      color: var(--purple);
-      font-size: 12px;
-      padding: 4px 12px;
-      border-radius: 100px;
-      font-weight: 500;
-      margin-bottom: 1rem;
-    }
-    h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-      letter-spacing: -0.5px;
-    }
-    .section-desc {
-      color: var(--muted);
-      max-width: 520px;
-      margin-bottom: 3rem;
-      line-height: 1.7;
-    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
     .gradient-text {
       background: linear-gradient(135deg, #4f8ef7 0%, #8b5cf6 40%, #06b6d4 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 70px; padding: 0 2rem;
+    }
+    .logo { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff;
     }
 
     /* ===== HERO ===== */
-    .hero {
-      padding: 7rem 2rem 5rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+    .hero { padding: 8rem 2rem 5rem; text-align: center; }
+    h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.1; margin-bottom: 1.5rem; }
+    .hero-sub { color: var(--muted); max-width: 600px; margin: 0 auto 3rem; font-size: 1.1rem; }
+
+    /* ===== GRID DE ARTIGOS ===== */
+    .section-tag {
+      display: inline-block; background: rgba(139, 92, 246, 0.1);
+      color: var(--purple); padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; margin-bottom: 1rem;
     }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(79, 142, 247, 0.12);
-      border: 1px solid rgba(79, 142, 247, 0.25);
-      color: var(--blue);
-      font-size: 12px;
-      padding: 5px 14px;
-      border-radius: 100px;
-      margin-bottom: 2rem;
-      font-weight: 500;
-    }
-    .hero-badge-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--blue);
-      border-radius: 50%;
-      animation: pulse-dot 2s infinite;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.3; }
-    }
-    h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-      letter-spacing: -1px;
-    }
-    .hero-sub {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 560px;
-      margin: 0 auto 2.5rem;
-      line-height: 1.7;
-    }
-    .hero-btns {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--blue), var(--purple));
-      color: #fff;
-      border: none;
-      padding: 13px 28px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: opacity 0.2s;
-    }
-    .btn-primary:hover { opacity: 0.85; }
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 13px 28px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: border-color 0.2s;
-    }
-    .btn-ghost:hover { border-color: var(--blue); }
-    .hero-grid {
+    .articles-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      max-width: 600px;
-      margin: 3rem auto 0;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem; margin-top: 3rem;
     }
-    .hero-stat {
+    .article-card {
       background: var(--bg2);
-      padding: 1.2rem;
-      text-align: center;
-    }
-    .hero-stat-num {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--blue);
-    }
-    .hero-stat-label {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    /* ===== FERRAMENTAS ===== */
-    .tools-section { background: var(--bg2); }
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.25rem;
-    }
-    .tool-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.5rem;
-      transition: border-color 0.2s, transform 0.2s;
-      cursor: default;
-    }
-    .tool-card:hover {
-      border-color: var(--blue);
-      transform: translateY(-3px);
-    }
-    .tool-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1rem;
-      font-size: 20px;
-    }
-    .ic-blue   { background: rgba(79,  142, 247, 0.15); }
-    .ic-purple { background: rgba(139,  92, 246, 0.15); }
-    .ic-cyan   { background: rgba(6,   182, 212, 0.15); }
-    .ic-green  { background: rgba(34,  197,  94, 0.15); }
-    .ic-pink   { background: rgba(236,  72, 153, 0.15); }
-    .ic-amber  { background: rgba(245, 158,  11, 0.15); }
-    .tool-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: var(--text);
-    }
-    .tool-desc {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-    .tool-tag {
-      display: inline-block;
-      background: rgba(79, 142, 247, 0.1);
-      color: var(--blue);
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 100px;
-      margin-top: 0.75rem;
-    }
-
- <!-- ===== ARTIGOS ===== -->
-<!-- ===== SEÇÃO DE ARTIGOS ===== -->
-<section style="padding: 4rem 1rem;">
-  <div class="articles-header" style="max-width: 1200px; margin: 0 auto 2rem;">
-    <h2 style="color: white; font-size: 2rem; font-family: 'Space Grotesk', sans-serif;">Artigos Recentes</h2>
-  </div>
-
-  <!-- Esta é a "grade" que organiza os quadrados um ao lado do outro -->
-  <div class="articles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
-    
-    <!-- SEU CARD DE LÓGICA -->
-    <div class="article-card">
-      <div style="background:#0f0f1a; border:1px solid #1e2a3a; border-radius:14px; padding:1.5rem; height: 100%;">
-        <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(139,92,246,0.12); border:1px solid rgba(139,92,246,0.28); color:#a78bfa; font-size:11px; font-weight:500; padding:3px 10px; border-radius:100px; margin-bottom:1rem">
-          Lógica & IA
-        </div>
-        <h3 style="font-size:18px; font-weight:600; color:#e2e8f0; margin-bottom:1rem;">Se p → q então a IA decide</h3>
-        <p style="font-size:14px; color:#94a3b8; line-height:1.6; margin-bottom:1.5rem;">
-          A lógica proposicional é a gramática oculta das IAs modernas. A inteligência artificial não adivinha: ela <strong>infere</strong>.
-        </p>
-        <a href="artigo-logica.html" style="background:linear-gradient(135deg,#4f8ef7,#8b5cf6); color:#fff; text-decoration:none; padding:10px 20px; border-radius:8px; font-size:14px; font-weight:500; display: inline-block;">
-          Leia mais ↗
-        </a>
-      </div>
-    </div>
-
-    <!-- Espaço para o próximo artigo que você criar -->
-    
-  </div>
-</section>
-
-    /* ===== NEWSLETTER ===== */
-    .newsletter-section { background: var(--bg2); }
-    .newsletter-inner {
-      background: var(--bg3);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 3.5rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .nl-glow {
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(79,142,247,0.08) 0%, transparent 70%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-    .nl-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(6, 182, 212, 0.12);
-      border: 1px solid rgba(6, 182, 212, 0.25);
-      color: var(--cyan);
-      font-size: 12px;
-      padding: 5px 14px;
-      border-radius: 100px;
-      margin-bottom: 1.5rem;
-      font-weight: 500;
-    }
-    .nl-form {
+      padding: 2rem;
+      transition: all 0.3s ease;
       display: flex;
-      gap: 0.75rem;
-      max-width: 460px;
-      margin: 0 auto;
-      flex-wrap: wrap;
+      flex-direction: column;
     }
-    .nl-input {
-      flex: 1;
-      min-width: 220px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 12px 16px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-family: 'Inter', sans-serif;
-      outline: none;
-      transition: border-color 0.2s;
+    .article-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px -20px rgba(139, 92, 246, 0.3);
     }
-    .nl-input:focus { border-color: var(--blue); }
-    .nl-input::placeholder { color: var(--muted); }
-    .nl-btn {
+
+    .btn-read {
+      margin-top: auto;
       background: linear-gradient(135deg, var(--blue), var(--purple));
-      color: #fff;
-      border: none;
-      padding: 12px 22px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      white-space: nowrap;
+      color: white; text-decoration: none;
+      padding: 12px; border-radius: 12px;
+      text-align: center; font-weight: 600; font-size: 14px;
       transition: opacity 0.2s;
     }
-    .nl-btn:hover { opacity: 0.85; }
-    .nl-note {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 1rem;
-    }
+    .btn-read:hover { opacity: 0.9; }
 
-    /* ===== RODAPÉ ===== */
-    footer {
-      background: var(--bg2);
-      border-top: 1px solid var(--border);
-      padding: 3rem 2rem 2rem;
-    }
-    .footer-inner { max-width: 1100px; margin: 0 auto; }
-    .footer-top {
-      display: grid;
-      grid-template-columns: 2fr repeat(3, 1fr);
-      gap: 3rem;
-      margin-bottom: 2.5rem;
-    }
-    .footer-brand p {
-      font-size: 14px;
-      color: var(--muted);
-      margin-top: 0.75rem;
-      max-width: 240px;
-      line-height: 1.6;
-    }
-    .footer-social {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 1.25rem;
-    }
-    .social-btn {
-      width: 34px;
-      height: 34px;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      cursor: pointer;
-      transition: border-color 0.2s;
-      color: var(--muted);
-    }
-    .social-btn:hover { border-color: var(--blue); color: var(--text); }
-    .footer-col h4 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 1rem;
-    }
-    .footer-col ul { list-style: none; }
-    .footer-col li { margin-bottom: 0.6rem; }
-    .footer-col a {
-      font-size: 13px;
-      color: var(--muted);
-      transition: color 0.2s;
-    }
-    .footer-col a:hover { color: var(--blue); }
-    .footer-bottom {
-      border-top: 1px solid var(--border);
-      padding-top: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .footer-bottom-links { display: flex; gap: 1.5rem; }
-    .footer-bottom a {
-      color: var(--muted);
-      font-size: 13px;
-      transition: color 0.2s;
-    }
-    .footer-bottom a:hover { color: var(--text); }
-
-    /* ===== RESPONSIVO ===== */
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .hero { padding: 5rem 1.5rem 3rem; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      section { padding: 3.5rem 1.5rem; }
-    }
-    @media (max-width: 480px) {
-      .footer-top { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; text-align: center; }
-      .hero-grid { grid-template-columns: 1fr; }
-    }
+    footer { padding: 4rem 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 14px; }
   </style>
 </head>
 <body>
 
-  <!-- ===== NAVBAR ===== -->
   <nav>
     <div class="nav-inner">
       <div class="logo">
         <div class="logo-icon">T</div>
-        <span class="logo-text">TechAI_Lab</span>
+        <span class="gradient-text">TechAI_Lab</span>
       </div>
-      <div class="nav-links">
-        <a href="#">Início</a>
-        <a href="#ferramentas">Ferramentas</a>
-        <a href="#artigos">Artigos</a>
-        <a href="#">Tutoriais</a>
-        <a href="#">Sobre</a>
-      </div>
-      <button class="nav-cta">Assinar grátis</button>
+      <button style="background: var(--bg3); color: white; border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; cursor: pointer;">Menu</button>
     </div>
   </nav>
 
-  <!-- ===== HERO ===== -->
-  <div class="hero">
-    <div class="hero-badge">
-      <span class="hero-badge-dot"></span>
-      Novidades em IA toda semana
-    </div>
-    <h1>
-      O Futuro da<br>
-      <span class="gradient-text">Inteligência Artificial,</span><br>
-      hoje.
-    </h1>
-    <p class="hero-sub">
-      Explore ferramentas, artigos e análises sobre o universo da IA.
-      Conteúdo técnico e acessível para devs, pesquisadores e entusiastas.
-    </p>
-    <div class="hero-btns">
-      <button class="btn-primary">Explorar conteúdo</button>
-      <button class="btn-ghost">Ver ferramentas →</button>
-    </div>
-    <div class="hero-grid">
-      <div class="hero-stat">
-        <div class="hero-stat-num">240+</div>
-        <div class="hero-stat-label">Artigos publicados</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">58k</div>
-        <div class="hero-stat-label">Leitores mensais</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">120+</div>
-        <div class="hero-stat-label">Ferramentas mapeadas</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== FERRAMENTAS DE IA ===== -->
-  <section class="tools-section" id="ferramentas">
+  <header class="hero">
     <div class="container">
-      <div class="section-tag">Ferramentas de IA</div>
-      <h2>As melhores ferramentas, <span class="gradient-text">curadas para você</span></h2>
-      <p class="section-desc">
-        Selecionamos e avaliamos as principais ferramentas de IA disponíveis hoje —
-        de geração de texto a visão computacional.
-      </p>
-      <div class="tools-grid">
-
-        <div class="tool-card">
-          <div class="tool-icon ic-blue">🤖</div>
-          <div class="tool-name">Modelos de Linguagem</div>
-          <div class="tool-desc">GPT-4, Claude, Gemini e outros LLMs de última geração comparados lado a lado.</div>
-          <span class="tool-tag">Linguagem</span>
-        </div>
-
-        <div class="tool-card">
-          <div class="tool-icon ic-purple">🎨</div>
-          <div class="tool-name">Geração de Imagens</div>
-          <div class="tool-desc">Midjourney, DALL-E 3, Stable Diffusion e Firefly: guia completo de uso e prompts.</div>
-          <span class="tool-tag" style="background:rgba(139,92,246,0.1);color:var(--purple)">Visão</span>
-        </div>
-
-        <div class="tool-card">
-          <div class="tool-icon ic-cyan">🔊</div>
-          <div class="tool-name">Síntese de Voz</div>
-          <div class="tool-desc">ElevenLabs, Play.ht e Suno para criar áudio e música com inteligência artificial.</div>
-          <span class="tool-tag" style="background:rgba(6,182,212,0.1);color:var(--cyan)">Áudio</span>
-        </div>
-
-        <div class="tool-card">
-          <div class="tool-icon ic-green">💻</div>
-          <div class="tool-name">Assistentes de Código</div>
-          <div class="tool-desc">GitHub Copilot, Cursor e Tabnine: como IA está transformando o desenvolvimento.</div>
-          <span class="tool-tag" style="background:rgba(34,197,94,0.1);color:#22c55e">Dev</span>
-        </div>
-
-        <div class="tool-card">
-          <div class="tool-icon ic-pink">🎬</div>
-          <div class="tool-name">Vídeo com IA</div>
-          <div class="tool-desc">Runway, Sora, Kling e Pika Labs para criação e edição de vídeos com poucos cliques.</div>
-          <span class="tool-tag" style="background:rgba(236,72,153,0.1);color:#ec4899">Vídeo</span>
-        </div>
-
-        <div class="tool-card">
-          <div class="tool-icon ic-amber">⚡</div>
-          <div class="tool-name">Automação & Agentes</div>
-          <div class="tool-desc">n8n, Make, Zapier e LangChain para construir fluxos de trabalho autônomos com IA.</div>
-          <span class="tool-tag" style="background:rgba(245,158,11,0.1);color:#f59e0b">Agentes</span>
-        </div>
-
-      </div>
+      <h1>O Futuro da <span class="gradient-text">Inteligência Artificial</span>, hoje.</h1>
+      <p class="hero-sub">Unindo lógica matemática, ciência e tecnologia para desbravar a nova era digital.</p>
     </div>
-  </section>
+  </header>
 
-  <!-- ===== ARTIGOS RECENTES ===== -->
-  <section id="artigos">
+  <section id="artigos" style="padding-bottom: 8rem;">
     <div class="container">
-      <div class="articles-header">
-        <div>
-          <div class="section-tag">Artigos Recentes</div>
-          <h2>Leituras essenciais <span class="gradient-text">desta semana</span></h2>
-        </div>
-        <a href="#">Ver todos os artigos →</a>
-      </div>
+      <div class="section-tag">Conteúdo Exclusivo</div>
+      <h2 style="font-family: 'Space Grotesk'; font-size: 2rem;">Artigos Recentes</h2>
 
       <div class="articles-grid">
-
-        <div class="article-card">
-          <div class="article-img img-1">
-            <span>🧠</span>
-            <span class="article-cat">Deep Learning</span>
+        
+        <!-- SEU NOVO CARD DE LÓGICA (DESTAQUE) -->
+        <div class="article-card" style="border: 1px solid var(--purple);">
+          <div style="color: var(--purple); font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 1px;">
+            Lógica & IA
           </div>
-          <div class="article-body">
-            <div class="article-meta">
-              <span>18 abr 2026</span>
-              <span class="meta-dot"></span>
-              <span>8 min leitura</span>
-            </div>
-            <div class="article-title">Como o Raciocínio em Cadeia Muda Tudo nos LLMs</div>
-            <div class="article-excerpt">Chain-of-thought prompting elevou o desempenho dos modelos em tarefas complexas. Entenda por quê.</div>
-          </div>
-          <div class="article-footer">
-            <div class="article-author">
-              <div class="avatar av1">AM</div>
-              <span>Ana Melo</span>
-            </div>
-            <span class="read-link">Ler →</span>
-          </div>
+          <h3 style="font-family: 'Space Grotesk'; font-size: 22px; margin-bottom: 1rem;">Se <span style="color: var(--blue)">p → q</span> então a IA decide</h3>
+          <p style="color: var(--muted); font-size: 15px; margin-bottom: 2rem;">
+            A lógica proposicional é a gramática oculta das IAs modernas. Descubra como premissas matemáticas se transformam em decisões de algoritmos complexos.
+          </p>
+          <a href="artigo-logica.html" class="btn-read">Ler artigo completo ↗</a>
         </div>
 
+        <!-- CARD EXEMPLO 2 -->
         <div class="article-card">
-          <div class="article-img img-2">
-            <span>🤖</span>
-            <span class="article-cat" style="color:var(--purple);border-color:rgba(139,92,246,0.3)">Agentes</span>
+          <div style="color: var(--cyan); font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 1px;">
+            Deep Learning
           </div>
-          <div class="article-body">
-            <div class="article-meta">
-              <span>16 abr 2026</span>
-              <span class="meta-dot"></span>
-              <span>6 min leitura</span>
-            </div>
-            <div class="article-title">Agentes de IA Autônomos: Utopia ou Realidade em 2026?</div>
-            <div class="article-excerpt">Do AutoGPT ao Devin, exploramos até onde os agentes autônomos chegaram e o que ainda falta.</div>
-          </div>
-          <div class="article-footer">
-            <div class="article-author">
-              <div class="avatar av2">RL</div>
-              <span>Rafael Lima</span>
-            </div>
-            <span class="read-link">Ler →</span>
-          </div>
-        </div>
-
-        <div class="article-card">
-          <div class="article-img img-3">
-            <span>⚡</span>
-            <span class="article-cat" style="color:var(--cyan);border-color:rgba(6,182,212,0.3)">Hardware</span>
-          </div>
-          <div class="article-body">
-            <div class="article-meta">
-              <span>14 abr 2026</span>
-              <span class="meta-dot"></span>
-              <span>5 min leitura</span>
-            </div>
-            <div class="article-title">Chips Neuromórficos: O Próximo Salto no Hardware de IA</div>
-            <div class="article-excerpt">Intel Loihi, IBM NorthPole e a nova geração de silício inspirado no cérebro humano.</div>
-          </div>
-          <div class="article-footer">
-            <div class="article-author">
-              <div class="avatar av3">JS</div>
-              <span>Julia Santos</span>
-            </div>
-            <span class="read-link">Ler →</span>
-          </div>
-        </div>
-
-        <div class="article-card">
-          <div class="article-img img-4">
-            <span>🛡️</span>
-            <span class="article-cat" style="color:#ec4899;border-color:rgba(236,72,153,0.3)">Ética & IA</span>
-          </div>
-          <div class="article-body">
-            <div class="article-meta">
-              <span>12 abr 2026</span>
-              <span class="meta-dot"></span>
-              <span>10 min leitura</span>
-            </div>
-            <div class="article-title">Regulação da IA na Europa: o que muda para startups</div>
-            <div class="article-excerpt">O AI Act europeu entrou em vigor. Analisamos os impactos práticos para quem desenvolve com IA.</div>
-          </div>
-          <div class="article-footer">
-            <div class="article-author">
-              <div class="avatar av4">PO</div>
-              <span>Pedro Oliveira</span>
-            </div>
-            <span class="read-link">Ler →</span>
-          </div>
+          <h3 style="font-family: 'Space Grotesk'; font-size: 22px; margin-bottom: 1rem;">Redes Neurais e o Cérebro</h3>
+          <p style="color: var(--muted); font-size: 15px; margin-bottom: 2rem;">
+            Uma análise comparativa entre as sinapses biológicas e os pesos das redes neurais artificiais.
+          </p>
+          <a href="#" class="btn-read" style="background: var(--bg3); border: 1px solid var(--border);">Em breve</a>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- ===== NEWSLETTER ===== -->
-  <section class="newsletter-section">
-    <div class="container">
-      <div class="newsletter-inner">
-        <div class="nl-glow"></div>
-        <div class="nl-badge">✦ Newsletter semanal</div>
-        <h2 style="margin-bottom:.75rem">
-          Fique à frente da <span class="gradient-text">curva da IA</span>
-        </h2>
-        <p style="color:var(--muted);max-width:480px;margin:0 auto 2rem;font-size:.95rem">
-          Toda semana, os melhores artigos, ferramentas e descobertas de IA direto na
-          sua caixa de entrada. Zero spam.
-        </p>
-        <div class="nl-form">
-          <input
-            class="nl-input"
-            type="email"
-            id="nl-email"
-            placeholder="seu@email.com"
-          />
-          <button class="nl-btn" onclick="handleNewsletter()">Quero receber</button>
-        </div>
-        <p class="nl-note" id="nl-msg">
-          Mais de 12.400 leitores já assinaram. Cancele quando quiser.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== RODAPÉ ===== -->
   <footer>
-    <div class="footer-inner">
-      <div class="footer-top">
-
-        <div class="footer-brand">
-          <div class="logo">
-            <div class="logo-icon">T</div>
-            <span class="logo-text">TechAI_Lab</span>
-          </div>
-          <p>O hub de referência em Inteligência Artificial e tecnologia para a comunidade brasileira.</p>
-          <div class="footer-social">
-            <div class="social-btn">𝕏</div>
-            <div class="social-btn">in</div>
-            <div class="social-btn">▶</div>
-            <div class="social-btn">gh</div>
-          </div>
-        </div>
-
-        <div class="footer-col">
-          <h4>Conteúdo</h4>
-          <ul>
-            <li><a href="#">Artigos</a></li>
-            <li><a href="#">Tutoriais</a></li>
-            <li><a href="#">Vídeos</a></li>
-            <li><a href="#">Podcasts</a></li>
-            <li><a href="#">Newsletter</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Ferramentas</h4>
-          <ul>
-            <li><a href="#">LLMs</a></li>
-            <li><a href="#">Imagens</a></li>
-            <li><a href="#">Código</a></li>
-            <li><a href="#">Agentes</a></li>
-            <li><a href="#">Comparar</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Empresa</h4>
-          <ul>
-            <li><a href="#">Sobre nós</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Parceiros</a></li>
-            <li><a href="#">Contato</a></li>
-            <li><a href="#">Imprensa</a></li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="footer-bottom">
-        <span>© 2026 TechAI_Lab. Todos os direitos reservados.</span>
-        <div class="footer-bottom-links">
-          <a href="#">Privacidade</a>
-          <a href="#">Termos de uso</a>
-          <a href="#">Cookies</a>
-        </div>
-      </div>
-    </div>
+    <p>© 2026 TechAI_Lab. Desenvolvido com foco em Alta Performance.</p>
   </footer>
 
-  <!-- ===== JAVASCRIPT ===== -->
-  <script>
-    function handleNewsletter() {
-      const input = document.getElementById('nl-email');
-      const msg   = document.getElementById('nl-msg');
-      const value = input.value.trim();
-
-      if (!value || !value.includes('@') || !value.includes('.')) {
-        msg.textContent = 'Por favor, insira um e-mail válido.';
-        msg.style.color = '#f87171';
-        return;
-      }
-
-      msg.textContent = '✓ Inscrição confirmada! Bem-vindo ao TechAI_Lab.';
-      msg.style.color = '#4ade80';
-      input.value = '';
-      input.placeholder = 'Obrigado por assinar!';
-      input.disabled = true;
-      document.querySelector('.nl-btn').disabled = true;
-      document.querySelector('.nl-btn').style.opacity = '0.5';
-    }
-
-    // Permitir envio com tecla Enter no campo de e-mail
-    document.getElementById('nl-email').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') handleNewsletter();
-    });
-  </script>
-
-</body
-  <section class="articles-section">
-    <h2 style="font-family: 'Space Grotesk', sans-serif; color: white; font-size: 32px;">Artigos Recentes</h2>
-    
-    <div class="articles-grid">
-      
-      <!-- SEU CARD DE LÓGICA -->
-      <div class="article-card">
-        <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(139,92,246,0.12); border:1px solid rgba(139,92,246,0.28); color:#a78bfa; font-size:11px; font-weight:500; padding:3px 10px; border-radius:100px; margin-bottom:16px; width: fit-content;">
-          Lógica & IA
-        </div>
-        
-        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; color: white; margin-bottom: 12px;">
-          Se <code style="color: var(--blue)">p → q</code> então a IA decide
-        </h3>
-        
-        <p style="color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
-          A lógica proposicional é a gramática oculta das IAs modernas. A inteligência artificial não adivinha: ela <strong>infere</strong>.
-        </p>
-        
-        <a href="artigo-logica.html" style="margin-top: auto; background: linear-gradient(135deg, var(--blue), var(--purple)); color: white; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; text-align: center;">
-          Leia mais ↗
-        </a>
-      </div>
-
-      <!-- Aqui você poderá adicionar mais cards no futuro -->
-
-    </div>
-  </section>>
+</body>
 </html>
-
-
