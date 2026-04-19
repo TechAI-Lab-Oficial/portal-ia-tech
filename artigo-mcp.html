@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCP e Tool Use: Como IAs acessam o mundo real — TechAI_Lab</title>
+  
+  <meta name="description" content="Entenda o Model Context Protocol (MCP) e o Tool Use: a infraestrutura que transforma LLMs em agentes operacionais capazes de interagir com APIs e bancos de dados." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== VARIÁVEIS & RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg:      #0a0a0f;
+      --bg2:     #0f0f1a;
+      --purple:  #bf40bf; /* Cor MCP: Conectividade */
+      --blue:    #4f8ef7;
+      --text:    #e2e8f0;
+      --muted:   #94a3b8;
+      --border:  #1e2a3a;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ===== READING PROGRESS + TO TOP ===== */
+    .reading-progress {
+      position: fixed; top: 0; left: 0; right: 0; height: 4px;
+      background: rgba(255, 255, 255, 0.05); z-index: 220;
+    }
+    .reading-progress__bar {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--purple), var(--blue));
+      box-shadow: 0 0 18px rgba(191, 64, 191, 0.45);
+      transition: width 0.08s linear;
+    }
+
+    .to-top {
+      position: fixed; right: 18px; bottom: 18px; z-index: 210;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.55rem; padding: 10px 12px; border-radius: 14px;
+      border: 1px solid rgba(191, 64, 191, 0.22);
+      background: rgba(15, 15, 26, 0.82); color: var(--text);
+      font-size: 13px; font-weight: 650; text-decoration: none;
+      cursor: pointer; backdrop-filter: blur(10px);
+      opacity: 0; transform: translateY(10px); pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .to-top.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
+
+    /* ===== CABEÇALHO ===== */
+    .back-link {
+      color: var(--purple); text-decoration: none; font-size: 14px;
+      font-weight: 600; display: inline-flex; align-items: center;
+      gap: 8px; margin-bottom: 3rem; transition: transform 0.2s;
+    }
+    .back-link:hover { transform: translateX(-5px); }
+
+    .article-tag {
+      color: var(--purple); font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      line-height: 1.1; margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--purple), #fff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .meta {
+      display: flex; gap: 20px; color: var(--muted); font-size: 14px;
+      border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 3rem;
+    }
+
+    /* ===== CONTEÚDO ===== */
+    h2 {
+      font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem;
+      margin: 3.5rem 0 1.5rem; color: #fff; border-left: 4px solid var(--purple);
+      padding-left: 15px;
+    }
+
+    h3 {
+      font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem;
+      margin: 2rem 0 1rem; color: var(--purple);
+    }
+
+    p { margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--muted); text-align: justify; }
+    
+    strong { color: #fff; font-weight: 600; }
+
+    .tech-box {
+      background: var(--bg2); border-left: 4px solid var(--purple);
+      padding: 2rem; margin: 2.5rem 0; border-radius: 0 16px 16px 0;
+    }
+
+    footer {
+      text-align: center; padding: 5rem 0; border-top: 1px solid var(--border);
+      color: var(--muted); font-size: 14px; margin-top: 5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress"><div class="reading-progress__bar" id="readingProgressBar"></div></div>
+
+  <button class="to-top" id="toTopBtn" type="button">↑ Topo</button>
+
+  <div class="container">
+    <a href="index.html" class="back-link">← Voltar para a Home</a>
+
+    <div class="article-tag">Infraestrutura de Agentes</div>
+    <h1>MCP e Tool Use: Como IAs acessam o mundo real</h1>
+
+    <div class="meta">
+      <span>📅 18 de Abril, 2026</span>
+      <span>⏱️ 12 min de leitura</span>
+      <span>✍️ Por TechAI_Lab Team</span>
+    </div>
+
+    <article class="content">
+      <p>MCP e <strong>tool use</strong> são duas peças centrais para transformar LLMs em agentes úteis fora do ambiente isolado do chat. Enquanto o <em>tool use</em> dá à IA a capacidade de "querer" agir, o <strong>Model Context Protocol (MCP)</strong> fornece o encanamento padrão para que essa ação aconteça de forma segura e universal.</p>
+
+      
+
+      <h2>O que é Tool Use</h2>
+      <p>Tool use é a capacidade do modelo de decidir, durante o processo de raciocínio, que precisa de uma informação ou ação que não possui nativamente. Em vez de inventar uma resposta, a IA gera uma chamada de função (Function Calling), solicitando acesso a uma calculadora, uma busca no Google, ou um comando de banco de dados.</p>
+      
+      <p>Isso amplia o horizonte operacional da IA. Ela deixa de ser apenas um gerador de texto treinado com dados de 2024 e passa a operar com informação em tempo real, realizando integrações diretas com o ecossistema de software da empresa.</p>
+
+      <h2>O que é MCP (Model Context Protocol)</h2>
+      <p>Se o tool use é o desejo da IA de usar uma ferramenta, o MCP é o protocolo que padroniza essa conexão. Criado para ser o <strong>"USB-C da Inteligência Artificial"</strong>, o MCP elimina a necessidade de criar uma integração personalizada para cada banco de dados ou API que você deseja conectar ao seu modelo.</p>
+      
+      <p>Ele estabelece um formato comum onde servidores de dados podem expor recursos, ferramentas e prompts para qualquer cliente MCP (como uma IDE, um chatbot ou um agente autônomo). Isso garante interoperabilidade: um servidor MCP que expõe o sistema de arquivos do seu computador funcionará da mesma forma no Claude, no GPT ou em um modelo local via Ollama.</p>
+
+      <div class="tech-box">
+        <strong>Visão Estratégica:</strong> O MCP resolve o problema da fragmentação. Sem ele, conectar uma IA a 10 serviços exigia 10 implementações de API diferentes. Com MCP, você implementa o protocolo uma vez e acessa tudo.
+      </div>
+
+      <h2>Arquitetura e Funcionamento</h2>
+      <p>A arquitetura MCP é baseada em três pilares fundamentais:</p>
+      <ul>
+        <li><strong>Host:</strong> O aplicativo principal onde a IA reside (ex: Cursor, VS Code, Chat Interface).</li>
+        <li><strong>Cliente MCP:</strong> O módulo dentro do host que gerencia as conexões.</li>
+        <li><strong>Servidor MCP:</strong> Um conector leve que "fala" com a fonte de dados (ex: GitHub, PostgreSQL, Google Drive) e traduz as informações para o protocolo.</li>
+      </ul>
+
+      <p>O fluxo funciona em um loop de controle: O usuário faz uma pergunta → O Host percebe que precisa de dados externos → O Cliente MCP solicita ao Servidor MCP → O Servidor executa a tarefa e devolve o contexto → O Host injeta esse contexto no modelo para a resposta final.</p>
+
+      <h2>MCP vs. RAG: Onde cada um brilha?</h2>
+      <p>Embora ambos tragam dados externos, eles têm focos distintos. O <strong>RAG</strong> é focado em recuperação passiva: encontrar o documento certo em uma base estática. O <strong>MCP</strong> é focado em interação ativa: ele pode ler dados dinâmicos, mas também pode <em>escrever</em>, como abrir um ticket no Jira ou deletar um arquivo, se permitido.</p>
+
+      <h2>Segurança e o Futuro dos Agentes</h2>
+      <p>O MCP foi desenhado com foco em segurança. Como o servidor MCP roda em um ambiente controlado e expõe apenas métodos específicos, o desenvolvedor tem controle total sobre o que a IA pode ver ou fazer. Em 2026, isso é essencial para a adoção corporativa, permitindo que IAs analisem logs sensíveis sem nunca terem acesso direto às credenciais do sistema.</p>
+
+      <h2>Conclusão</h2>
+      <p>A combinação de Tool Use e MCP é o que finalmente retira a IA da "caixa de chat" e a coloca no centro do fluxo de trabalho. É a transição de uma IA que <em>fala sobre o trabalho</em> para uma IA que <em>executa o trabalho</em>.</p>
+    </article>
+
+    <footer>
+      © 2026 TechAI_Lab - Engenharia de Integração e Automação.
+    </footer>
+  </div>
+
+  <script>
+    const progressBar = document.getElementById('readingProgressBar');
+    const toTopBtn = document.getElementById('toTopBtn');
+
+    function updateReadingUI() {
+      const doc = document.documentElement;
+      const scrollTop = doc.scrollTop || document.body.scrollTop;
+      const scrollHeight = doc.scrollHeight - doc.clientHeight;
+      const progress = (scrollTop / scrollHeight) * 100;
+
+      progressBar.style.width = progress + '%';
+
+      if (scrollTop > 400) toTopBtn.classList.add('is-visible');
+      else toTopBtn.classList.remove('is-visible');
+    }
+
+    window.addEventListener('scroll', updateReadingUI, { passive: true });
+    toTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
