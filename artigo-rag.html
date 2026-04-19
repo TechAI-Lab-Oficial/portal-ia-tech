@@ -4,110 +4,180 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RAG: Memória de Longo Prazo para LLMs — TechAI_Lab</title>
+  
   <meta name="description" content="Análise profunda sobre Retrieval-Augmented Generation: a arquitetura que permite memória persistente e atualização em tempo real para IA." />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+
   <style>
+    /* ===== VARIÁVEIS & RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    
     :root {
-      --bg-color: #0d1117;
-      --card-bg: #161b22;
-      --text-main: #e6edf3;
-      --text-dim: #8b949e;
-      --accent: #2f81f7;
-      --border: #30363d;
-      --max-width: 800px;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      font-family: 'Inter', -apple-system, system-ui, sans-serif;
-      line-height: 1.8;
-    }
-    .container { max-width: var(--max-width); margin: 0 auto; padding: 60px 20px; }
-    header { margin-bottom: 50px; border-bottom: 1px solid var(--border); padding-bottom: 30px; }
-    .back-link { display: inline-block; color: var(--accent); text-decoration: none; font-size: 0.9rem; margin-bottom: 15px; font-weight: 500; }
-    h1 { font-size: 2.8rem; line-height: 1.2; margin-bottom: 15px; color: #fff; letter-spacing: -0.02em; }
-    .metadata { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 20px; }
-    
-    .content { font-size: 1.15rem; color: #d1d7dd; text-align: justify; }
-    .content p { margin-bottom: 25px; }
-    .content h2 { margin: 50px 0 20px; color: #fff; font-size: 1.8rem; border-left: 4px solid var(--accent); padding-left: 15px; }
-    .content h3 { margin: 30px 0 15px; color: var(--accent); font-size: 1.4rem; }
-    
-    .tech-box { 
-      background: var(--card-bg); 
-      border: 1px solid var(--border); 
-      padding: 25px; 
-      border-radius: 8px; 
-      margin: 40px 0;
-      font-size: 1rem;
-      border-left: 4px solid var(--accent);
+      --bg:      #0a0a0f;
+      --bg2:     #0f0f1a;
+      --blue:    #4f8ef7;
+      --purple:  #8b5cf6;
+      --cyan:    #06b6d4;
+      --text:    #e2e8f0;
+      --muted:   #94a3b8;
+      --border:  #1e2a3a;
     }
 
-    #readingProgressBar { position: fixed; top: 0; left: 0; height: 4px; background: var(--accent); width: 0%; z-index: 1000; }
-    #toTopBtn {
-      position: fixed; bottom: 30px; right: 30px; background: var(--accent); color: white;
-      border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer;
-      opacity: 0; visibility: hidden; transition: 0.3s; font-size: 1.2rem;
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.8;
+      overflow-x: hidden;
     }
-    #toTopBtn.is-visible { opacity: 1; visibility: visible; }
-    footer { margin-top: 80px; padding: 40px 0; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 0.9rem; text-align: center; }
+
+    /* ===== READING PROGRESS + TO TOP ===== */
+    .reading-progress {
+      position: fixed; top: 0; left: 0; right: 0; height: 4px;
+      background: rgba(255, 255, 255, 0.05); z-index: 220;
+    }
+    .reading-progress__bar {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--blue));
+      box-shadow: 0 0 18px rgba(6, 182, 212, 0.45);
+      transition: width 0.08s linear;
+    }
+
+    .to-top {
+      position: fixed; right: 18px; bottom: 18px; z-index: 210;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.55rem; padding: 10px 12px; border-radius: 14px;
+      border: 1px solid rgba(6, 182, 212, 0.22);
+      background: rgba(15, 15, 26, 0.82); color: var(--text);
+      font-size: 13px; font-weight: 650; text-decoration: none;
+      cursor: pointer; backdrop-filter: blur(10px);
+      opacity: 0; transform: translateY(10px); pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .to-top.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
+
+    /* ===== CABEÇALHO ===== */
+    .back-link {
+      color: var(--cyan); text-decoration: none; font-size: 14px;
+      font-weight: 600; display: inline-flex; align-items: center;
+      gap: 8px; margin-bottom: 3rem; transition: transform 0.2s;
+    }
+    .back-link:hover { transform: translateX(-5px); }
+
+    .article-tag {
+      color: var(--cyan); font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      line-height: 1.1; margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .meta {
+      display: flex; gap: 20px; color: var(--muted); font-size: 14px;
+      border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 3rem;
+    }
+
+    /* ===== CONTEÚDO ===== */
+    h2 {
+      font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem;
+      margin: 3.5rem 0 1.5rem; color: #fff; border-left: 4px solid var(--cyan);
+      padding-left: 15px;
+    }
+
+    h3 {
+      font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem;
+      margin: 2rem 0 1rem; color: var(--cyan);
+    }
+
+    p { margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--muted); text-align: justify; }
+    
+    strong { color: #fff; font-weight: 600; }
+
+    .tech-box {
+      background: var(--bg2); border-left: 4px solid var(--blue);
+      padding: 2rem; margin: 2.5rem 0; border-radius: 0 16px 16px 0;
+    }
+
+    ul { margin-bottom: 1.5rem; padding-left: 1.5rem; color: var(--muted); }
+    li { margin-bottom: 0.8rem; }
+
+    footer {
+      text-align: center; padding: 5rem 0; border-top: 1px solid var(--border);
+      color: var(--muted); font-size: 14px; margin-top: 5rem;
+    }
   </style>
 </head>
 <body>
-  <div id="readingProgressBar"></div>
-  <button id="toTopBtn" title="Voltar ao Topo">↑</button>
+  <div class="reading-progress"><div class="reading-progress__bar" id="readingProgressBar"></div></div>
+
+  <button class="to-top" id="toTopBtn" type="button">↑ Topo</button>
 
   <div class="container">
-    <header>
-      <a href="index.html" class="back-link">← Voltar ao TechAI_Lab</a>
-      <h1>RAG: Memória de Longo Prazo para LLMs</h1>
-      <div class="metadata">Publicado em 2026 • Engenharia de Dados • +1000 palavras</div>
-    </header>
+    <a href="index.html" class="back-link">← Voltar para a Home</a>
+
+    <div class="article-tag">Engenharia de Dados</div>
+    <h1>RAG: Memória de Longo Prazo para LLMs</h1>
+
+    <div class="meta">
+      <span>📅 18 de Abril, 2026</span>
+      <span>⏱️ 15 min de leitura</span>
+      <span>✍️ Por TechAI_Lab Team</span>
+    </div>
 
     <article class="content">
-      <p>O <strong>RAG (Retrieval-Augmented Generation)</strong>, ou Geração Aumentada por Recuperação, estabeleceu-se em 2026 como a espinha dorsal de qualquer sistema de IA que pretenda ser útil em ambientes corporativos e de pesquisa. O problema fundamental que o RAG resolve é a natureza estática e limitada dos Grandes Modelos de Linguagem (LLMs). Embora modelos como o GPT-4 ou Claude possuam um conhecimento vasto, esse conhecimento é congelado no tempo durante o treinamento. O RAG permite que o modelo "consulte um livro" antes de responder, garantindo que a informação seja atual, privada e verificável.</p>
+      <p>O <strong>RAG (Retrieval-Augmented Generation)</strong>, ou Geração Aumentada por Recuperação, estabeleceu-se em 2026 como a espinha dorsal de qualquer sistema de IA que pretenda ser útil em ambientes corporativos e de pesquisa. O problema fundamental que o RAG resolve é a natureza estática e limitada dos Grandes Modelos de Linguagem (LLMs).</p>
+
+      
+
+      <p>Embora modelos como o GPT-4 ou Claude possuam um conhecimento vasto, esse conhecimento é congelado no tempo durante o treinamento. O RAG permite que o modelo "consulte um livro" antes de responder, garantindo que a informação seja atual, privada e verificável.</p>
 
       <h2>O Problema da Amnésia e da Alucinação</h2>
       <p>Para entender o RAG, primeiro precisamos diagnosticar a falha dos sistemas puros de chat. Um LLM funciona através de probabilidades estatísticas. Quando você pergunta sobre um documento interno da sua empresa, o modelo não "sabe" o que está lá; ele tenta prever qual seria uma resposta plausível baseada no que viu na internet durante o treino. Isso leva à <strong>alucinação</strong>: a IA inventa fatos com extrema confiança.</p>
-      <p>Além disso, existe a limitação da <strong>janela de contexto</strong>. Mesmo que você pudesse colar 500 páginas de PDF em uma conversa, isso seria computacionalmente caro e ineficiente. À medida que o prompt cresce, o modelo começa a ignorar partes importantes do meio do texto (o efeito <em>Lost in the Middle</em>). O RAG resolve isso mudando a abordagem: em vez de dar todo o contexto ao modelo, damos apenas o pedaço exato que contém a resposta.</p>
+      
+      <p>Além disso, existe a limitação da <strong>janela de contexto</strong>. À medida que o prompt cresce, o modelo começa a ignorar partes importantes do meio do texto (o efeito <em>Lost in the Middle</em>). O RAG resolve isso mudando a abordagem: em vez de dar todo o contexto ao modelo, damos apenas o pedaço exato que contém a resposta.</p>
 
       <h2>A Arquitetura de Fluxo: Do Dado ao Vetor</h2>
-      <p>A implementação de um sistema RAG de nível sênior não é apenas sobre buscar texto; é sobre uma infraestrutura complexa de processamento de dados. O fluxo divide-se em duas etapas principais: a <strong>Fase de Indexação</strong> e a <strong>Fase de Inferência</strong>.</p>
+      <p>A implementação de um sistema RAG de nível sênior envolve uma infraestrutura complexa de processamento de dados dividida em duas etapas principais:</p>
 
       <h3>1. O Pipeline de Indexação</h3>
-      <p>Nesta fase, pegamos o conhecimento bruto (PDFs, bancos de dados SQL, mensagens de Slack, documentação técnica) e o transformamos em algo que a IA entenda. Isso envolve o <em>Chunking</em>: a arte de dividir textos em pedaços granulares. Se o pedaço for muito pequeno, perde-se o contexto. Se for muito grande, trazemos ruído desnecessário para o modelo. Em 2026, usamos divisões semânticas que respeitam a estrutura dos parágrafos e subtítulos.</p>
-      <p>Após a divisão, cada "chunk" passa por um modelo de <strong>Embedding</strong>. Este modelo transforma o texto em um vetor — uma sequência de milhares de números que representam a posição do significado desse texto em um espaço matemático multidimensional. Se dois textos falam sobre "algoritmos de busca", seus vetores estarão geometricamente próximos no espaço.</p>
+      <p>Nesta fase, transformamos o conhecimento bruto (PDFs, bancos de dados SQL, Slack) em algo que a IA entenda. Isso envolve o <strong>Chunking</strong>: a arte de dividir textos em pedaços granulares. Após a divisão, cada pedaço passa por um modelo de <strong>Embedding</strong>, que transforma o texto em um vetor matemático em um espaço multidimensional.</p>
 
       <h3>2. O Banco de Dados Vetorial</h3>
-      <p>Esses vetores são armazenados em bancos especializados (como Pinecone, Weaviate ou Milvus). Ao contrário de um banco de dados tradicional que busca por palavras exatas (chave-primária), o banco vetorial busca por <strong>proximidade semântica</strong>. Isso significa que se você procurar por "cachorro", ele pode retornar um texto que contém a palavra "canino", mesmo que a palavra buscada não esteja presente no documento.</p>
-
-      <h2>A Fase de Inferência: Recuperação e Geração</h2>
-      <p>Quando o usuário faz uma pergunta, o processo é invertido. A pergunta é transformada em um vetor no mesmo espaço matemático. O sistema então realiza uma busca de <em>Cosine Similarity</em> para encontrar os 3 ou 5 fragmentos mais próximos da intenção do usuário. Este é o momento da <strong>Recuperação (Retrieval)</strong>.</p>
-      <p>Com os fragmentos em mãos, o sistema constrói um novo prompt para o LLM. Esse prompt segue uma estrutura rigorosa: "Você é um assistente técnico. Abaixo estão fragmentos de documentos confiáveis. Use APENAS estas informações para responder à pergunta do usuário. Se a resposta não estiver nos fragmentos, diga que não sabe."</p>
+      <p>Esses vetores são armazenados em bancos especializados que buscam por <strong>proximidade semântica</strong>. Se você procurar por "cachorro", o banco pode retornar um texto sobre "animais caninos" porque eles ocupam posições próximas no espaço vetorial, mesmo sem palavras idênticas.</p>
 
       <div class="tech-box">
-        <strong>Insights do TechAI_Lab:</strong> A eficácia de um RAG não é medida pelo modelo de chat (GPT/Claude), mas pela qualidade dos seus <em>Embeddings</em> e da sua estratégia de <em>Retrieval</em>. Se você recuperar o dado errado, terá uma "alucinação fundamentada".
+        <strong>Insights do TechAI_Lab:</strong> A eficácia de um RAG não é medida pelo modelo de chat, mas pela qualidade dos seus <em>Embeddings</em>. Se você recuperar o dado errado, terá uma "alucinação fundamentada".
       </div>
 
+      <h2>A Fase de Inferência: Recuperação e Geração</h2>
+      <p>Quando o usuário faz uma pergunta, ela também vira um vetor. O sistema realiza uma busca de <em>Cosine Similarity</em> para encontrar os fragmentos mais próximos. Com eles em mãos, o sistema constrói um prompt rigoroso: "Use APENAS estes fragmentos para responder. Se a resposta não estiver aqui, diga que não sabe."</p>
+
       <h2>Técnicas Avançadas: Reranking e Busca Híbrida</h2>
-      <p>Para atingir precisão de nível industrial, não basta usar apenas vetores. Introduzimos a <strong>Busca Híbrida</strong>, que combina a busca vetorial (semântica) com a busca tradicional por palavras-chave (BM25). Isso é crucial quando o usuário procura termos técnicos específicos ou números de série, onde a "vizinhança semântica" pode ser imprecisa.</p>
-      <p>Outra técnica indispensável é o <strong>Reranking</strong>. Após recuperar 20 fragmentos potenciais, usamos um modelo de IA menor e mais rápido para reavaliar a relevância de cada um em relação à pergunta. Somente os 3 melhores chegam ao LLM final. Isso otimiza o custo e melhora drasticamente a precisão da resposta.</p>
+      <p>Para atingir precisão industrial, usamos a <strong>Busca Híbrida</strong>, combinando vetores com busca tradicional por palavras-chave (BM25). Outra técnica indispensável é o <strong>Reranking</strong>: após recuperar 20 fragmentos, um modelo menor e mais rápido reavalia a relevância de cada um, garantindo que apenas o "filé mignon" da informação chegue ao LLM final.</p>
 
       <h2>RAG vs. Fine-Tuning: Quando usar cada um?</h2>
-      <p>Muitos desenvolvedores cometem o erro de tentar fazer Fine-Tuning para ensinar fatos novos a um modelo. No TechAI_Lab, seguimos a regra de ouro:
       <ul>
         <li><strong>Fine-Tuning:</strong> Use para mudar o tom, o estilo, a linguagem ou para ensinar uma tarefa específica (ex: formatar JSON perfeitamente).</li>
-        <li><strong>RAG:</strong> Use para fornecer conhecimento, fatos, dados mutáveis e informações privadas que precisam de rastreabilidade.</li>
+        <li><strong>RAG:</strong> Use para fornecer conhecimento, fatos, dados mutáveis e informações que precisam de rastreabilidade e citação de fontes.</li>
       </ul>
-      O RAG oferece algo que o Fine-Tuning não consegue: a <strong>citação de fontes</strong>. Um sistema RAG pode dizer exatamente de qual página e parágrafo ele tirou aquela informação, permitindo auditoria humana instantânea.</p>
 
-      <h2>Conclusão e Futuro</h2>
-      <p>A evolução do RAG aponta para agentes autônomos que não apenas recuperam dados, mas decidem <em>quando</em> precisam recuperar. Estamos saindo da era de "chatbots" para entrar na era de sistemas inteligentes com acesso total à memória organizacional. Dominar essa arquitetura é o que separa um programador de IA comum de um Engenheiro de Sistemas de Elite.</p>
+      <h2>Conclusão</h2>
+      <p>Estamos saindo da era de "chatbots" para entrar na era de sistemas inteligentes com acesso total à memória organizacional. Dominar o RAG é o que separa um programador comum de um Engenheiro de IA de Elite em 2026.</p>
     </article>
 
     <footer>
-      © 2026 TechAI_Lab - Rigor técnico e profundidade em engenharia.
+      © 2026 TechAI_Lab - Visão de futuro com rigor técnico.
     </footer>
   </div>
 
@@ -120,12 +190,14 @@
       const scrollTop = doc.scrollTop || document.body.scrollTop;
       const scrollHeight = doc.scrollHeight - doc.clientHeight;
       const progress = (scrollTop / scrollHeight) * 100;
+
       progressBar.style.width = progress + '%';
+
       if (scrollTop > 400) toTopBtn.classList.add('is-visible');
       else toTopBtn.classList.remove('is-visible');
     }
 
-    window.addEventListener('scroll', updateReadingUI);
+    window.addEventListener('scroll', updateReadingUI, { passive: true });
     toTopBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
